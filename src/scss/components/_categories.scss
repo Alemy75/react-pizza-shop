@@ -1,9 +1,10 @@
-@import 'variables';
+@import '../variables';
 
 .categories {
   ul {
     display: flex;
-
+    width: 100%;
+    flex-wrap: wrap;
     li {
       background-color: #f9f9f9;
       padding: 13px 30px;
@@ -12,6 +13,7 @@
       font-weight: bold;
       cursor: pointer;
       transition: background-color 0.1s ease-in-out;
+      margin-bottom: 10px;
       @include noselect();
 
       &:hover {
