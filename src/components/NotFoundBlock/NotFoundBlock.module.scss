@@ -1,0 +1,13 @@
+.notfound {
+  width: 100%;
+  text-align: center;
+  margin: 100px 0;
+  & span {
+    font-size: 64px;
+  }
+  & p {
+    width: 500px;
+    margin: 0 auto;
+    font-size: 22px;
+  }
+}
