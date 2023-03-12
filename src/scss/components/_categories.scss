@@ -4,7 +4,6 @@
   ul {
     display: flex;
     width: 100%;
-    flex-wrap: wrap;
     li {
       background-color: #f9f9f9;
       padding: 13px 30px;
@@ -13,7 +12,6 @@
       font-weight: bold;
       cursor: pointer;
       transition: background-color 0.1s ease-in-out;
-      margin-bottom: 10px;
       @include noselect();
 
       &:hover {
@@ -29,5 +27,14 @@
         color: #fff;
       }
     }
+  }
+  @media (max-width: 1260px) {
+    margin-top: 40px;
+    display: inline-block;
+    width: 100%;
+    overflow: scroll;
+    padding: 20px;
+    border-right: 2px dashed #fe5f1e;
+    border-left: 2px dashed #fe5f1e;
   }
 }

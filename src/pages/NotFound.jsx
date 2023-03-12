@@ -3,7 +3,9 @@ import NotFoundBlock from "../components/NotFoundBlock/NotFoundBlock";
 
 const NotFound = () => {
     return (
-        <NotFoundBlock/>
+        <div className="container">
+            <NotFoundBlock/>
+        </div>
     );
 };
 

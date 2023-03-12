@@ -8,11 +8,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: 644px) {
+      flex-direction: column;
+      .header__cart {
+        margin-top: 30px;
+      }
+    }
   }
 
   &__logo {
     display: flex;
-
     img {
       margin-right: 15px;
     }
