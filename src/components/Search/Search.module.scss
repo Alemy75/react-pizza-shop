@@ -1,0 +1,60 @@
+.root {
+  position: relative;
+  margin: 0 20px;
+  @media (max-width: 824px) {
+    width: 100%;
+    margin: 30px auto;
+  }
+}
+
+.input  {
+  all: unset;
+  padding: 13px 44px;
+  width: 300px;
+  text-overflow: ellipsis;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  &::placeholder {
+    text-overflow: ellipsis;
+  }
+  &:focus {
+    outline: 3px solid #ffecdf;
+  }
+  @media (max-width: 824px) {
+    width: 86%;
+    padding: 13px 5%;
+    margin: 0 auto;
+    padding-left: 9%;
+  }
+  @media (max-width: 504px) {
+    padding: 13px 15%;
+    width: 70%
+  }
+}
+
+.icon {
+  width: 23px;
+  height: 23px;
+  position: absolute;
+  top: 13px;
+  left: 13px;
+  color: #ccc;
+  margin-right: 20px;
+  transition: color 0.01s ease;
+  cursor: pointer;
+}
+
+.clearIco {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  color: #ccc;
+  opacity: 0.2;
+  cursor: pointer;
+  transition: opacity 0.01s ease;
+  &:hover {
+    opacity: 0.7;
+  }
+}

@@ -3,6 +3,7 @@ import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import PizzaBlockSkeleton from "../components/PizzaBlock/PizzaBlockSkeleton";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
+import Pagination from "../components/Pagination/Pagination";
 
 const Home = (props) => {
     const [items, setItems] = useState([])
@@ -11,37 +12,55 @@ const Home = (props) => {
     const [activeIndex, setActiveIndex] = useState(0)
     const [sortActiveIndex, setSortActiveIndex] = useState(0)
 
+    const [currentPage, setCurrentPage] = useState(1)
+
     const setIndexHandler = (index) => {
         setActiveIndex(index)
     }
 
     const sortTypes = [
-        {name: 'популярности' , sort: 'rating'},
-        {name: 'цене' , sort: 'price'},
-        {name: 'алфавиту' , sort: 'name'},
+        {name: 'популярности (по возрастанию)' , sort: 'rating'},
+        {name: 'популярности (по убыванию)' , sort: '-rating'},
+        {name: 'цене (по возрастанию)' , sort: 'price'},
+        {name: 'цене (по убыванию)' , sort: '-price'},
+        {name: 'алфавиту (по возрастанию)' , sort: 'name'},
+        {name: 'алфавиту (по убыванию)' , sort: '-name'},
     ]
 
-    const catUrl = activeIndex === 0 ? '?' : `?category=${activeIndex}&`
+    const catUrl = activeIndex === 0 ? '' : `&category=${activeIndex}`
 
-    const sortUrl = `sortBy=${sortTypes[sortActiveIndex].sort}&order=asc&`
+    const sortUrl = `${sortTypes[sortActiveIndex].sort.replace('-', '')}`
 
-    const queryUrl = `https://640c55b7a3e07380e8f1f0b6.mockapi.io/pizzas${catUrl}${sortUrl}`
+    const orderUrl = `${sortTypes[sortActiveIndex].sort.includes('-') ? 'desc' : 'asc'}`
+
+    const searchUrl = props.searchValue ? `&search=${props.searchValue}` : ''
+
+    const queryUrl = `https://640c55b7a3e07380e8f1f0b6.mockapi.io/pizzas?page=${currentPage}&limit=4${catUrl}&sortBy=${sortUrl}&order=${orderUrl}${searchUrl}`
+
+    const skeletons = [...new Array(4)].map((_, index) =>
+        <PizzaBlockSkeleton key={index}/>
+    )
+
+    const pizzas = items
+        // .filter(el =>
+        //     el.name.toLowerCase().includes(props.searchValue.toLowerCase())
+        // )
+        .map(obj => <PizzaBlock
+            key={obj.id}
+            {...obj}
+        />)
 
     useEffect(() => {
-        try {
-            setIsLoading(true)
-            fetch(queryUrl)
-                .then(res => res.json())
-                .then(data => {
-                    setItems(data)
-                    setIsLoading(false)
-
-                })
-            window.scrollTo(0, 0)
-        } catch(e) {
-            console.log(e)
-        }
-    }, [activeIndex, sortActiveIndex])
+        setIsLoading(true)
+        fetch(queryUrl)
+            .then(res => res.json())
+            .then(data => {
+                setItems(data)
+                setIsLoading(false)
+            })
+            .catch(err => console.log(err))
+        window.scrollTo(0, 0)
+    }, [activeIndex, sortActiveIndex, props.searchValue, queryUrl])
 
     return (
         <div className="container">
@@ -59,17 +78,13 @@ const Home = (props) => {
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
                 { isLoading
-                    ?
-                    [...new Array(8)].map((_, index) =>
-                        <PizzaBlockSkeleton key={index}/>
-                    )
-                    :
-                    items.map(obj => <PizzaBlock
-                        key={obj.id}
-                        {...obj}
-                    />)
+                    ? skeletons
+                    : pizzas.length > 0
+                        ? pizzas
+                        : <p>По результатам поиска ничего не найдено :(</p>
                 }
             </div>
+            <Pagination onChangePage={(number) => setCurrentPage(number)}/>
         </div>
     );
 };

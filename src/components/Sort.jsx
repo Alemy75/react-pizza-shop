@@ -27,7 +27,7 @@ const Sort = (props) => {
                         fill="#2C2C2C"
                     />
                 </svg>
-                <b>Сортировка по:</b>
+                <b className="sort__text">Сортировка по:</b>
                 <span onClick={() => popupHandler()}>{props.sortTypes[props.value].name}</span>
             </div>
             {isPopupOpen && (

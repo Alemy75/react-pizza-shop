@@ -20,7 +20,11 @@
       cursor: pointer;
     }
   }
-
+  &__text {
+    @media (max-width: 450px) {
+      display: none;
+    }
+  }
   &__popup {
     position: absolute;
     right: 0;
@@ -30,8 +34,12 @@
     border-radius: 10px;
     overflow: hidden;
     padding: 10px 0;
-    width: 160px;
-
+    width: 300px;
+    @media (max-width: 450px) {
+      top: 20px;
+      left: 0;
+      width: 100%;
+    }
     ul {
       overflow: hidden;
       li {
