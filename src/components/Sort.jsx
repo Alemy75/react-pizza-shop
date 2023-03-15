@@ -1,6 +1,11 @@
 import React, {useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {setSortActiveIndex} from "../store/slices/filterSlice";
 
 const Sort = (props) => {
+    const {sortTypes, sortActiveIndex} = useSelector(state => state.filter)
+    const dispatch = useDispatch()
+
     const [isPopupOpen, setIsPopupOpen] = useState(false)
 
     const popupHandler = () => {
@@ -8,7 +13,7 @@ const Sort = (props) => {
     }
 
     const activeHandler = (index) => {
-        props.onClickSort(index)
+        dispatch(setSortActiveIndex(index))
         popupHandler()
     }
 
@@ -28,16 +33,16 @@ const Sort = (props) => {
                     />
                 </svg>
                 <b className="sort__text">Сортировка по:</b>
-                <span onClick={() => popupHandler()}>{props.sortTypes[props.value].name}</span>
+                <span onClick={() => popupHandler()}>{sortTypes[sortActiveIndex].name}</span>
             </div>
             {isPopupOpen && (
                 <div className="sort__popup">
                     <ul>
                         {
-                            props.sortTypes.map((item, index) =>
+                            sortTypes.map((item, index) =>
                                 <li
                                     onClick={() => activeHandler(index)}
-                                    className={props.value === index
+                                    className={sortActiveIndex === index
                                         ? 'active'
                                         : ''}
                                 >
