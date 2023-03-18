@@ -1,10 +1,15 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {setCategoryId} from "../store/slices/filterSlice";
+import {setCategoryId, setCurrentPage} from "../store/slices/filterSlice";
 
 const Categories = (props) => {
-    const {categories} = useSelector(state => state.filter)
+    const {categories, categoryId} = useSelector(state => state.filter)
     const dispatch = useDispatch()
+
+    const onClickHandler = (index) => {
+        dispatch(setCategoryId(index))
+        dispatch(setCurrentPage(1))
+    }
 
     return (
         <div className="categories">
@@ -13,9 +18,9 @@ const Categories = (props) => {
                     categories.map((value, index) => (
                         <li
                             key={value}
-                            onClick={() => dispatch(setCategoryId(index))}
+                            onClick={() => onClickHandler(index)}
                             className={
-                                props.value === index
+                                 categoryId === index
                                     ? 'active'
                                     : ''
                             }

@@ -1,9 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {setSortActiveIndex} from "../store/slices/filterSlice";
+import {setSort} from "../store/slices/filterSlice";
 
 const Sort = (props) => {
-    const {sortTypes, sortActiveIndex} = useSelector(state => state.filter)
+    const {sortTypes, sortActiveIndex, sorting} = useSelector(state => state.filter)
+    const sortRef = useRef()
+    const isMounted = useRef(false)
+
     const dispatch = useDispatch()
 
     const [isPopupOpen, setIsPopupOpen] = useState(false)
@@ -13,9 +16,23 @@ const Sort = (props) => {
     }
 
     const activeHandler = (index) => {
-        dispatch(setSortActiveIndex(index))
+        dispatch(setSort(index))
         popupHandler()
     }
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (event.srcElement.className !== "sort__ref") {
+                setIsPopupOpen(false)
+                console.log('click')
+            }
+        }
+        document.body.addEventListener('click', handleClickOutside)
+
+        return () => {
+            document.body.removeEventListener('click', handleClickOutside)
+        }
+    }, [])
 
     return (
         <div className="sort">
@@ -33,14 +50,15 @@ const Sort = (props) => {
                     />
                 </svg>
                 <b className="sort__text">Сортировка по:</b>
-                <span onClick={() => popupHandler()}>{sortTypes[sortActiveIndex].name}</span>
+                <span className="sort__ref" onClick={() => popupHandler()}>{sorting.name}</span>
             </div>
             {isPopupOpen && (
-                <div className="sort__popup">
+                <div ref={sortRef} className="sort__popup">
                     <ul>
                         {
                             sortTypes.map((item, index) =>
                                 <li
+                                    key={item.name}
                                     onClick={() => activeHandler(index)}
                                     className={sortActiveIndex === index
                                         ? 'active'

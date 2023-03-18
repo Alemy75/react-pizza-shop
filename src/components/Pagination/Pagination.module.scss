@@ -9,21 +9,18 @@
       border: 1px solid #ededed;
       border-radius: 4px;
       cursor: pointer;
+      &:hover {
+        border-radius: 4px;
+        outline: 3px solid #ffecdf;
+      }
     }
   }
   :global {
-    .selected {
-      border-radius: 4px;
-      outline: 3px solid #ffecdf;
-    }
     .previous, .next {
       font-weight: 200;
       border: none;
       cursor: pointer;
       border-radius: 4px;
-      &:hover {
-        background-color: #e8e8e8;
-      }
     }
   }
 }
