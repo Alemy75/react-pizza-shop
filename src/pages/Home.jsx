@@ -13,11 +13,12 @@ import {setFilters} from "../store/slices/filterSlice";
 const Home = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const {sorting, sortTypes, categoryId, searchValue, currentPage} = useSelector(state => state.filter)
 
+    // Есть ли строка запроса и монтирован ли компонент
     const isSearch = useRef(false)
     const isMounted = useRef(false)
 
-    const {sorting, sortTypes, categoryId, searchValue, currentPage} = useSelector(state => state.filter)
     const [items, setItems] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
@@ -28,7 +29,6 @@ const Home = () => {
         const sortUrl = `${sorting.sort.replace('-', '')}`
         const orderUrl = `${sorting.sort.includes('-') ? 'desc' : 'asc'}`
         const searchUrl = searchValue ? `&search=${searchValue}` : ''
-        console.log(`https://640c55b7a3e07380e8f1f0b6.mockapi.io/pizzas?page=${currentPage}&limit=4${catUrl}&sortBy=${sortUrl}&order=${orderUrl}${searchUrl}`)
         axios.get(`https://640c55b7a3e07380e8f1f0b6.mockapi.io/pizzas?page=${currentPage}&limit=4${catUrl}&sortBy=${sortUrl}&order=${orderUrl}${searchUrl}`)
             .then(res => {
                 setItems(res.data)
@@ -48,6 +48,7 @@ const Home = () => {
             }))
             isSearch.current = true
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // Если изменили параметры и был первый рендер
@@ -61,6 +62,7 @@ const Home = () => {
             navigate(`?${queryString}`)
         }
         isMounted.current = true
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categoryId, sorting.sort, currentPage])
 
     // Если был первый рендер то запрашиваем пиццы
@@ -74,6 +76,7 @@ const Home = () => {
         isSearch.current = false
         return () => clearTimeout(getData)
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categoryId, sorting.sort, searchValue, currentPage])
 
     const skeletons = [...new Array(4)].map((_, index) => <PizzaBlockSkeleton key={index}/>)

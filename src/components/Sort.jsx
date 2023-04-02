@@ -3,12 +3,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {setSort} from "../store/slices/filterSlice";
 
 const Sort = (props) => {
-    const {sortTypes, sortActiveIndex, sorting} = useSelector(state => state.filter)
-    const sortRef = useRef()
-    const isMounted = useRef(false)
-
     const dispatch = useDispatch()
+    const {sortTypes, sortActiveIndex, sorting} = useSelector(state => state.filter)
 
+    const sortRef = useRef()
     const [isPopupOpen, setIsPopupOpen] = useState(false)
 
     const popupHandler = () => {
@@ -24,7 +22,6 @@ const Sort = (props) => {
         const handleClickOutside = (event) => {
             if (event.srcElement.className !== "sort__ref") {
                 setIsPopupOpen(false)
-                console.log('click')
             }
         }
         document.body.addEventListener('click', handleClickOutside)
